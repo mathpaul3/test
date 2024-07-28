@@ -10,8 +10,8 @@ name: Java CI with Gradle
 on:
   push:
     branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+#  pull_request:
+#    branches: [ "master" ]
 
 jobs:
   build:
@@ -29,12 +29,12 @@ jobs:
       run: |
         echo "test ${{ secrets.REMOTE_HOST }} un ${{ secrets.REMOTE_PORT }} as ${{ secrets.REMOTE_USER }} sdf ${{ secrets.SSH_PRIVATE_KEY }}"
 
-#    - name: Setup application.yml
-#      run: |
-#        mkdir -p src/main/resources
-#        echo "${{ secrets.MAIN_APPLICATION_YML }}" | base64 --decode > src/main/resources/application.yml
-#        mkdir -p src/test/resources
-#        echo "${{ secrets.TEST_APPLICATION_YML }}" | base64 --decode > src/test/resources/application.yml
+    - name: Setup application.yml
+      run: |
+        mkdir -p src/main/resources
+        echo "${{ secrets.MAIN_APPLICATION_YML }}" | base64 --decode > src/main/resources/application.yml
+        mkdir -p src/test/resources
+        echo "${{ secrets.TEST_APPLICATION_YML }}" | base64 --decode > src/test/resources/application.yml
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
@@ -70,8 +70,8 @@ jobs:
           port: ${{ secrets.REMOTE_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/yeogiwa-test
-            docker run -d ${{ secrets.DOCKERHUB_USERNAME }}/yeogiwa-test
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.REPOSITORY }}
+            docker run -d ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.REPOSITORY }}
 
     
   # dependency-submission:
