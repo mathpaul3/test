@@ -69,5 +69,6 @@ jobs:
           port: ${{ secrets.REMOTE_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.REPOSITORY }}
-            docker run -d ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.REPOSITORY }}
+            echo "test text" > ~/test.txt
+#            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.REPOSITORY }}
+#            docker run -d ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.REPOSITORY }}
