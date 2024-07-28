@@ -27,7 +27,7 @@ jobs:
 
     - name: check secrets
       run: |
-        echo "test ${{ secrets.DOCKERHUB_USERNAME }} un ${{ secrets.DOCKERHUB_PASSWORD }}"
+        echo "test ${{ secrets.REMOTE_HOST }} un ${{ secrets.REMOTE_PORT }} as ${{ secrets.REMOTE_USER }} sdf ${{ secrets.SSH_PRIVATE_KEY }}"
 
 #    - name: Setup application.yml
 #      run: |
