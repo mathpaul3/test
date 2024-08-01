@@ -15,6 +15,8 @@ on:
 
 jobs:
   build:
+    name: Test and Build
+
     runs-on: ubuntu-latest
 
     steps:
@@ -25,6 +27,20 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
+    - name: Setup Personal Environment
+      run: |
+        case "${{ github.actor_id }}" in
+          "${{ secrets.USER1_ID }}") DB_PORT=${{ secrets.USER1_DB_PORT }}
+          ;;
+          "${{ secrets.USER2_ID }}") DB_PORT=${{ secrets.USER2_DB_PORT }}
+          ;;
+          "${{ secrets.USER3_ID }}") DB_PORT=${{ secrets.USER3_DB_PORT }}
+          ;;
+          "${{ secrets.USER4_ID }}") DB_PORT=${{ secrets.USER4_DB_PORT }}
+          ;;
+        esac
+        DDL_AUTO=create
+
     - name: Setup application.yml
       run: |
         mkdir -p src/main/resources
@@ -34,9 +50,16 @@ jobs:
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
-      
+
+    - name: Test with Gradle
+      run: ./gradlew test
+
+    - name: Setup Distribution Environment
+      run: |
+        DB_PORT=${{ secrets.DIST_DB_PORT }}
+
     - name: Build with Gradle Wrapper
-      run: ./gradlew build
+      run: ./gradlew build -x test
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
@@ -69,6 +92,5 @@ jobs:
           port: ${{ secrets.REMOTE_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            echo "test text" > ~/test.txt
-#            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.REPOSITORY }}
-#            docker run -d ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.REPOSITORY }}
+            ${{ secrets.PATH_TO_DOCKER }} pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.REPOSITORY }}
+            ${{ secrets.PATH_TO_DOCKER }} run -p ${{ secrets.DOCKER_PORT }} -d ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.REPOSITORY }}
