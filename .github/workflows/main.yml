@@ -73,7 +73,7 @@ jobs:
 
     - name: Build and push
       run: |
-        docker buildx build --platform linux/amd64 -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:v${{ github.run_number }}
+        docker buildx build --platform linux/amd64 -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:v${{ github.run_number }} .
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:v${{ github.run_number }}
 #    - name: Build and push
 #      uses: docker/build-push-action@v6
