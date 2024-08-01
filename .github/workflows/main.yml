@@ -93,4 +93,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             ${{ secrets.PATH_TO_DOCKER }} pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.REPOSITORY }}
-            ${{ secrets.PATH_TO_DOCKER }} run -p ${{ secrets.DOCKER_PORT }} -d ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.REPOSITORY }}
+            ${{ secrets.PATH_TO_DOCKER }} stop ${{ secrets.DOCKER_CONTAINER_NAME }}
+            ${{ secrets.PATH_TO_DOCKER }} rm ${{ secrets.DOCKER_CONTAINER_NAME }}
+            ${{ secrets.PATH_TO_DOCKER }} run -p ${{ secrets.DOCKER_PORT }} --name ${{ secrets.DOCKER_CONTAINER_NAME }} -d ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.REPOSITORY }}
